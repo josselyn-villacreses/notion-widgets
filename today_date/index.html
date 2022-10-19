@@ -1,57 +1,87 @@
 <html>
 <head>
   <title>Greeting Message:</title>
+  <meta charset="UTF-8"/>
   <style>
+    :root {
+      --font-color: #626262;
+    }
+    #container {
+      width: fit-content;
+      color: var(--font-color);
+    }
+    #dayOfWeek {
+      text-align: center;
+      font-variant-caps: all-small-caps;
+      letter-spacing: 4px;
+    }
     #lbl {
-      font-family: monospace;
-      font-size: xx-large;
-      color: #626262;
-      padding: 5px;
-      border: 1px solid #ececec;
+      font-family: serif;
+      font-size: xxx-large;
       text-align: center;
       line-height: 1.5;
-      height:85%
-
-
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      width: fit-content;
     }
-    #date{
-      font-size:large;
+    #day::after {
+      content: " ";
+      width: 48px;
+      height: 1.2px;
+      background: var(--font-color);
+      position: absolute;
+      transform: rotate(-45deg);
+      top: 78px;
+      left: 40px;
     }
-    body{
-      background-color: aliceblue;
+    #month {
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
-<div id="lbl"></div>
+<div id="container">
+  <div id="dayOfWeek"></div>
+  <div id="lbl"></div>
+</div>
 </body>
 
 <script>
-  var weekday = new Array(7);
-  weekday[0] = "Sunday";
-  weekday[1] = "Monday";
-  weekday[2] = "Tuesday";
-  weekday[3] = "Wednesday";
-  weekday[4] = "Thursday";
-  weekday[5] = "Friday";
-  weekday[6] = "Saturday";
+  Date.prototype.getWeek = function() {
+    var onejan = new Date(this.getFullYear(),0,1);
+    var today = new Date(this.getFullYear(),this.getMonth(),this.getDate());
+    var dayOfYear = ((today - onejan + 86400000)/86400000);
+    return Math.ceil(dayOfYear/7)
+  };
 
+  const weekday = new Array(7);
+  weekday[0] = "Domingo";
+  weekday[1] = "Lunes";
+  weekday[2] = "Martes";
+  weekday[3] = "Miércoles";
+  weekday[4] = "Jueves";
+  weekday[5] = "Vienes";
+  weekday[6] = "Sábado";
+  const today = new Date();
+  const hrs = today.getHours();
+  const dayOfWeek = weekday[today.getDay()];
+  const actualDay = today.getDate();
+  const actualMonth = today.getMonth() + 1;
+  const weekNumber = today.getWeek();
+  //const date = dayOfWeek + " " + today.getDate() + "/" + (today.getMonth() + 1) + '/' + today.getFullYear();
 
-  var today = new Date();
-  var hrs = today.getHours();
-  var dayOfWeek = weekday[today.getDay()];
-  var date = dayOfWeek+" " + today.getDate() + "/" +(today.getMonth()+1) +'/'+today.getFullYear()  ;
+  let greet = '';
 
-  var greet;
-
-  if (hrs < 12)
+ /* if (hrs < 12)
     greet = 'Good Morning  ';
   else if (hrs >= 12 && hrs <= 17)
     greet = 'Good Afternoon ';
   else if (hrs >= 17 && hrs <= 24)
-    greet = 'Good Evening  ';
+    greet = 'Good Evening  ';*/
 
   document.getElementById('lbl').innerHTML =
-    greet+=`<div id="date"> It's ${date}</div>`;
+    greet+=`<div id="day">${actualDay}</div><div id="month">${actualMonth}</div>`;
+  document.getElementById('dayOfWeek').innerHTML = dayOfWeek;
 </script>
 </html>
